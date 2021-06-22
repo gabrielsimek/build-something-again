@@ -1,4 +1,3 @@
-// import fetch from 'node-fetch';
 import pool from '../lib/utils/pool.js';
 import setup from '../data/setup.js';
 import request from 'supertest';
@@ -10,15 +9,7 @@ describe('github user routes', () => {
     
     return setup(pool);
   });
-  // afterEach(async ()  => {
-    
-  //   await fetch(`https://api.github.com/repos/gabrielsimek/practiceRepo${randomNum}`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       // 'Content-Type': 'application/json',
-  //       'Authorization': token,
-  //     },
-  //   });
+
         
         
   //change for ci
