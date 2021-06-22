@@ -16,16 +16,39 @@ export default class RepoService {
     const json = await res.json();
     // return json.html_url;  
 
-    const repo = await Repo.insert(userName, json.html_url);
+    const repo = await Repo.insert(userName, json.html_url, json.name);
     return repo;
+  }
+
+  static async deleteRepo({ id, user, token }){
+    const deletedRepo = await Repo.remove(id);
+
+    await fetch(`https://api.github.com/repos/${user}/${deletedRepo.repoName}`, {
+      method: 'DELETE',
+      headers: {
+        // 'Content-Type': 'application/json',
+        'Authorization': token,
+      },
+    });
+
+    return deletedRepo;
+  }
+
+  static async updateRepoName({ id, user, token, repoName }, data){
+    
+    const res = await fetch(`https://api.github.com/repos/${user}/${repoName}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+
+    const updatedRepo = await Repo.update(id, json.html_url, json.name);
+    return updatedRepo;
+    
   }
 }
 
-// RepoService.createRepo(`token ${process.env.GH_PERSONAL_AUTHORIZATION}`, { 
-//   'name': 'practiceApi122', 
-//   'auto_init': true, 
-//   'private': false, 
-//   'gitignore_template': 'nanoc',
-//   'description': 'a practice repo'
-    
-// }).then(data => console.log(data.html_url));

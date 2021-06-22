@@ -3,5 +3,6 @@ DROP TABLE IF EXISTS repos;
 CREATE TABLE repos (
     id BIGINT GENERATED ALWAYS AS IDENTITY,
     user_name TEXT NOT NULL,
-    url TEXT NOT NULL
+    url TEXT NOT NULL,
+    repo_name TEXT NOT NULL
 );
