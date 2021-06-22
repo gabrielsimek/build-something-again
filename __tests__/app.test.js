@@ -1,9 +1,9 @@
+import fetch from 'node-fetch';
 import pool from '../lib/utils/pool.js';
 import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import RepoService from '../services/RepoService.js';
-import fetch from 'node-fetch';
 
 describe('github user routes', () => {
   const token = `token ${process.env.GH_PERSONAL_AUTHORIZATION}`;
