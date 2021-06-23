@@ -5,18 +5,13 @@ import app from '../lib/app.js';
 import RepoService from '../services/RepoService.js';
 
 describe('github user routes', () => {
+  const token = `token ${process.env.GH_PERSONAL_AUTHORIZATION}`;
+  let num = Math.floor(Math.random() * 100);
+  
   beforeEach(() => {
-    
+    num++;
     return setup(pool);
   });
-
-        
-        
-  //change for ci
-        
-  const token = `token ${process.env.GH_PERSONAL_AUTHORIZATION}`;
-  let randomNum = Math.floor(Math.random() * 1000);
-  
 
   it('creates a new repo for a github user', async () => {
     const res = await request(app)
@@ -25,7 +20,7 @@ describe('github user routes', () => {
         userName: 'gabrielsimek',
         token,
         data: { 
-          'name': `practiceRepo${randomNum}`, 
+          'name': `practiceRepo${num}`, 
           'auto_init': true, 
           'private': false, 
           'gitignore_template': 'nanoc',
@@ -36,18 +31,17 @@ describe('github user routes', () => {
     expect(res.body).toEqual({
       id: '1',
       userName: 'gabrielsimek',
-      url: `https://github.com/gabrielsimek/practiceRepo${randomNum}`,
-      repoName: `practiceRepo${randomNum}`
+      url: `https://github.com/gabrielsimek/practiceRepo${num}`,
+      repoName: `practiceRepo${num}`
     });
   });
   it('gets a github users', async () => {
-    randomNum += 1;
     //prevent duplicate names when test run back to back
     const repo = await RepoService.createRepo({
       userName: 'gabrielsimek',
       token,
       data: { 
-        'name': `practiceRepo${randomNum}`, 
+        'name': `practiceRepo${num}`, 
         'auto_init': true, 
         'private': false, 
         'gitignore_template': 'nanoc',
@@ -59,12 +53,11 @@ describe('github user routes', () => {
     expect(res.body).toEqual(repo);
   });
   it('gets all of a users newly created repos', async () => {
-    randomNum += 2;
     const repo1 = await RepoService.createRepo({
       userName: 'gabrielsimek',
       token,
       data: { 
-        'name': `practiceRepo${randomNum}`, 
+        'name': `practiceRepo${num}`, 
         'auto_init': true, 
         'private': false, 
         'gitignore_template': 'nanoc',
@@ -74,7 +67,7 @@ describe('github user routes', () => {
       userName: 'gabrielsimek',
       token,
       data: { 
-        'name': `practiceRepo${randomNum + 1}`, 
+        'name': `practiceRepo${num + 1}`, 
         'auto_init': true, 
         'private': false, 
         'gitignore_template': 'nanoc',
@@ -86,12 +79,12 @@ describe('github user routes', () => {
     expect(res.body).toEqual([repo1, repo2]);
   });
   it('updates a repo name', async () => {
-    randomNum += 3;
+    num++;
     const repo =  await RepoService.createRepo({
       userName: 'gabrielsimek',
       token,
       data: { 
-        'name': `practiceRepo${randomNum}`, 
+        'name': `practiceRepo${num}`, 
         'auto_init': true, 
         'private': false, 
         'gitignore_template': 'nanoc',
@@ -104,7 +97,6 @@ describe('github user routes', () => {
         name: 'practiceRepoNew'
       });
 
-   
     expect(res.body).toEqual({      
       id: '1',
       userName: 'gabrielsimek',
@@ -113,13 +105,12 @@ describe('github user routes', () => {
   }
   );
   it('deletes a repo', async () => {
-    randomNum += 1;
-    //prevent duplicate names when test run back to back
+  
     const repo = await RepoService.createRepo({
       userName: 'gabrielsimek',
       token,
       data: { 
-        'name': `practiceRepo${randomNum}`, 
+        'name': `practiceRepo${num}`, 
         'auto_init': true, 
         'private': false, 
         'gitignore_template': 'nanoc',
